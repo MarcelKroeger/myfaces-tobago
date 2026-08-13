@@ -87,6 +87,7 @@ export class Tree extends HTMLElement {
   }
 
   // FROM HERE
+  //NEW
   get nodes(): NodeListOf<TreeNode> {
     return this.querySelectorAll("tobago-tree-node");
   }
@@ -215,6 +216,7 @@ export class Tree extends HTMLElement {
     }
   }
   //TO HERE
+  //NEW
 }
 
 document.addEventListener("tobago.init", function (event: Event): void {
