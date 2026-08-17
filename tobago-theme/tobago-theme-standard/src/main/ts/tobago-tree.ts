@@ -86,14 +86,13 @@ export class Tree extends HTMLElement {
     return Selectable[this.getAttribute("selectable")] as Selectable;
   }
 
-  // FROM HERE
-  //NEW
   get nodes(): NodeListOf<TreeNode> {
     return this.querySelectorAll("tobago-tree-node");
   }
 
   connectedCallback(): void {
-    // initialize roving tabindex: if no node has tabindex=0, set the first one
+    // initialize roving tabindex: set first node as focusable
+    // (Layout/offsetParent is unreliable here, so we skip visibility check)
     const nodes = this.nodes;
     if (nodes && nodes.length > 0) {
       let found = false;
@@ -127,14 +126,12 @@ export class Tree extends HTMLElement {
 
   private handleKeydown(event: KeyboardEvent): void {
     const key = event.key;
-    // find the tree-node that is the origin or contains the active element
     let node: HTMLElement = null;
     const target = event.target as HTMLElement;
     if (target) {
       node = target.closest("tobago-tree-node") as HTMLElement;
     }
     if (!node) {
-      // fallback: find the node that contains document.activeElement
       for (const n of Array.from(this.nodes) as TreeNode[]) {
         if ((n as HTMLElement).contains(document.activeElement)) {
           node = n as HTMLElement;
@@ -146,7 +143,6 @@ export class Tree extends HTMLElement {
       return;
     }
 
-    // Space / Enter -> toggle the input inside the node
     if (key === " " || key === "Spacebar" || key === "Space" || key === "Enter") {
       if (this.hasAttribute("data-debug")) {
         console.debug("tobago-tree keydown", key, "on node", node.id);
@@ -160,7 +156,6 @@ export class Tree extends HTMLElement {
       return;
     }
 
-    // Up / Down -> move focus to previous/next node
     if (key === "ArrowUp" || key === "ArrowDown") {
       event.preventDefault();
       const all = Array.from(this.nodes) as TreeNode[];
@@ -175,7 +170,6 @@ export class Tree extends HTMLElement {
       return;
     }
 
-    // Left -> collapse or focus parent
     if (key === "ArrowLeft") {
       event.preventDefault();
       const expanded = node.classList.contains("tobago-expanded");
@@ -196,10 +190,10 @@ export class Tree extends HTMLElement {
       return;
     }
 
-    // Right -> expand or focus first child
     if (key === "ArrowRight") {
       event.preventDefault();
-      const expandable = node.getAttribute("expandable") === "expandable" || node.classList.contains("tobago-expandable");
+      const expandable = node.getAttribute("expandable") ===
+          "expandable" || node.classList.contains("tobago-expandable");
       const expanded = node.classList.contains("tobago-expanded");
       if (expandable && !expanded) {
         const toggle = node.querySelector(".tobago-toggle") as HTMLElement;
@@ -215,8 +209,6 @@ export class Tree extends HTMLElement {
       return;
     }
   }
-  //TO HERE
-  //NEW
 }
 
 document.addEventListener("tobago.init", function (event: Event): void {
