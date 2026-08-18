@@ -355,7 +355,7 @@
           <plugin>
             <groupId>org.apache.tomee.maven</groupId>
             <artifactId>tomee-maven-plugin</artifactId>
-            <version>10.1.5</version>
+            <version>10.2.0</version>
             <configuration>
               <tomeeClassifier>plus</tomeeClassifier>
               <!--<tomeeHttpPort>9090</tomeeHttpPort>-->
@@ -375,7 +375,7 @@
           <plugin>
             <groupId>io.openliberty.tools</groupId>
             <artifactId>liberty-maven-plugin</artifactId>
-            <version>3.12.0</version>
+            <version>3.12.1</version>
             <configuration>
               <serverXmlFile>${project.basedir}/src/test/liberty/config/server.xml</serverXmlFile>
             </configuration>
