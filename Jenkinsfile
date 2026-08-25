@@ -35,6 +35,26 @@ pipeline {
     }
 
     stages {
+        stage('UpdateDependencyCheckDatabase') {
+            when {
+                allOf {
+                    not {
+                        branch pattern: "^dependabot\\/.*", comparator: "REGEXP"
+                    }
+                    triggeredBy 'TimerTrigger'
+                }
+            }
+            tools {
+                maven "maven_latest"
+                jdk "jdk_21_latest"
+            }
+            environment {
+                NIST_NVD_API_KEY = credentials('NIST_NVD_API_KEY')
+            }
+            steps {
+                sh "mvn dependency-check:update-only -DnvdApiKeyEnvironmentVariable=NIST_NVD_API_KEY"
+            }
+        }
         stage('Prepare') {
             when {
                 not {
@@ -60,7 +80,7 @@ pipeline {
                 stages {
                     stage('BuildAndTest') {
                         steps {
-                            sh "mvn clean package checkstyle:check apache-rat:check dependency-check:check -Pgenerate-assembly -Pfrontend"
+                            sh "mvn clean package checkstyle:check apache-rat:check dependency-check:check -Pgenerate-assembly -Pfrontend -DautoUpdate=false"
                         }
                         post {
                             always {
