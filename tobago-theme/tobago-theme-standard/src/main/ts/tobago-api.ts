@@ -17,31 +17,17 @@
  * under the License.
  */
 
-package org.apache.myfaces.tobago.component;
+import {ajaxQueue} from "./tobago-ajax-queue";
 
-import java.util.Objects;
-
-public interface SupportsAutocomplete {
-
-  default String getAutocompleteString() {
-    final Object object = getAutocomplete();
-    if (object == null) {
-      return null;
-    } else if (object instanceof Boolean) {
-      return (Boolean) object ? "on" : "off";
-    } else if (object instanceof String) {
-      final String string = (String) object;
-      if (string.equals("true")) {
-        return "on";
-      } else if (string.equals("false")) {
-        return "off";
-      } else {
-        return string;
-      }
-    } else {
-      return Objects.toString(object);
-    }
+declare global {
+  interface Window {
+    tobago: Tobago;
   }
-
-  Object getAutocomplete();
 }
+
+window.tobago = {
+  ajax: {
+    request: (elementOrId: Element | string, event?: Event, options?: faces.ajax.RequestOptions) =>
+        ajaxQueue.request(elementOrId, event, options)
+  }
+};

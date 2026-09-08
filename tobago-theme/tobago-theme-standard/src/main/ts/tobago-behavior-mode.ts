@@ -16,8 +16,8 @@
  */
 
 export enum BehaviorMode {
-  "none",
-  "client",
-  "ajax",
-  "full"
+  none = "none",
+  client = "client",
+  ajax = "ajax",
+  full = "full"
 }

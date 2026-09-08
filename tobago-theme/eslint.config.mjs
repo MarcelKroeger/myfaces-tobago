@@ -23,7 +23,7 @@ import stylistic from '@stylistic/eslint-plugin'
 export default defineConfig([
   {
     ignores: [
-      "**/faces.d.ts",
+      "**/*.d.ts",
       "**/*.test.ts",
       "**/tobago-polyfill.ts"
     ]
@@ -45,6 +45,7 @@ export default defineConfig([
     rules: {
       "@stylistic/semi": "error",
       "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-inferrable-types": "off",
       "@typescript-eslint/no-unsafe-function-type": "off",
       "@typescript-eslint/no-unused-expressions": "off",
       "@typescript-eslint/no-unused-vars": "off",

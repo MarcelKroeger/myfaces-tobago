@@ -28,9 +28,9 @@
 
   <p>The collapsible concept is the base for
     <tc:link label="Box" outcome="/content/050-container/10-box/Box.xhtml"/>,
-    <tc:link label="Offcanvas" outcome="/content/060-popup/40-offcanvas/Offcanvas.xhtml"/>.
-    <tc:link label="Panel" outcome="/content/050-container/20-panel/Panel.xhtml"/>
-    <tc:link label="Popup" outcome="/content/060-popup/30-popup/Popup.xhtml"/>,
+    <tc:link label="Offcanvas" outcome="/content/060-popup/40-offcanvas/Offcanvas.xhtml"/>,
+    <tc:link label="Panel" outcome="/content/050-container/20-panel/Panel.xhtml"/>,
+    <tc:link label="Popup" outcome="/content/060-popup/30-popup/Popup.xhtml"/>
     and
     <tc:link label="Section" outcome="/content/050-container/40-section/Section.xhtml"/>.
     It determines how parts or whole components are shown or hidden.
@@ -96,5 +96,14 @@
     <p>The <code>for</code> attribute has to contain the ID of the component
       on which the transition should be executed.
       Both attributes are mandatory.</p>
+  </tc:section>
+
+  <tc:section label="JavaScript API">
+    <p>All collapsible tobago-* custom elements (<code>tobago-box</code>, <code>tobago-offcanvas</code>,
+      <code>tobago-panel</code>, <code>tobago-popup</code> and <code>tobago-section</code>) provide
+      <code class="language-js">expand()</code> and <code class="language-js">collapse()</code> methods for changing
+      their collapsed state on the client.</p>
+    <p>For example, show a popup with
+      <code class="language-js">document.querySelector("tobago-popup").expand();</code></p>
   </tc:section>
 </ui:composition>
