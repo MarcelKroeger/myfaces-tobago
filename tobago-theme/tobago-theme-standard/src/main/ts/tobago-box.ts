@@ -15,8 +15,13 @@
  * limitations under the License.
  */
 
-declare global {
-  const tobago: typeof faces;
+import {CollapsibleBase} from "./tobago-collapsible-base";
+
+class Box extends CollapsibleBase {
 }
 
-export {};
+document.addEventListener("tobago.init", function (event: Event): void {
+  if (window.customElements.get("tobago-box") == null) {
+    window.customElements.define("tobago-box", Box);
+  }
+});

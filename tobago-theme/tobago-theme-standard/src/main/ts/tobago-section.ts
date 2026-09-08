@@ -1,4 +1,4 @@
-<!--
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -13,11 +13,15 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
--->
+ */
 
-<tobago-date id='id' class='tobago-auto-spacing'>
-<div class='tobago-messages-container tobago-button-right' data-tobago-faces-message='a test'>
-<div class='input-group'>
-<input type='date' name='id' id='id::field' title='a test' max='9999-12-31' class='is-error form-control' autofocus='autofocus'></div>
-<tobago-popover label='Error' value='a test' trigger='focus'>
-<a tabindex='0' role='button' aria-label='Show error message' class='btn btn-danger'><i class='bi-exclamation-lg'></i></a></tobago-popover></div></tobago-date>
+import {CollapsibleBase} from "./tobago-collapsible-base";
+
+class Section extends CollapsibleBase {
+}
+
+document.addEventListener("tobago.init", function (event: Event): void {
+  if (window.customElements.get("tobago-section") == null) {
+    window.customElements.define("tobago-section", Section);
+  }
+});

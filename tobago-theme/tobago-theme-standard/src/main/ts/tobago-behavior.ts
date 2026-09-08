@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-import {Collapse} from "./tobago-collapse";
 import {File} from "./tobago-file";
 import {Page} from "./tobago-page";
 import {CollapseOperation} from "./tobago-collapse-operation";
@@ -23,6 +22,7 @@ import {BehaviorMode} from "./tobago-behavior-mode";
 import {Overlay} from "./tobago-overlay";
 import {EventListenerStore} from "./tobago-event-listener-store";
 import {ClientBehaviors} from "./tobago-client-behaviors";
+import {CollapsibleBase} from "./tobago-collapsible-base";
 
 class Behavior extends HTMLElement {
   private listeners: EventListenerStore = new EventListenerStore();
@@ -95,8 +95,19 @@ class Behavior extends HTMLElement {
     }
 
     if (this.collapseOperation && this.collapseTarget) {
-      const rootNode = this.getRootNode() as ShadowRoot | Document;
-      Collapse.execute(this.collapseOperation, rootNode.getElementById(this.collapseTarget), this.mode);
+      const collapseTarget: CollapsibleBase = document.getElementById(this.collapseTarget) as CollapsibleBase;
+      const clientSideAnimation: boolean = this.mode === BehaviorMode.client;
+      switch (this.collapseOperation) {
+        case CollapseOperation.show:
+          collapseTarget.expand(clientSideAnimation);
+          break;
+        case CollapseOperation.hide:
+          collapseTarget.collapse(clientSideAnimation);
+          break;
+        case CollapseOperation.toggle:
+          collapseTarget.toggle(clientSideAnimation);
+          break;
+      }
     }
 
     switch (this.mode) {

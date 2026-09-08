@@ -16,11 +16,10 @@
  */
 
 import {Modal} from "bootstrap";
-import {BehaviorMode} from "./tobago-behavior-mode";
-import {Collapse} from "./tobago-collapse";
-import {EventListenerStore} from "./tobago-event-listener-store";
 import {FocusableElement, tabbable} from "tabbable";
 import {Key} from "./tobago-key";
+import {CollapsibleBase} from "./tobago-collapsible-base";
+import {EventListenerStore} from "./tobago-event-listener-store";
 
 const BootstrapPopupEvent = {
   HIDE: "hide.bs.modal",
@@ -30,9 +29,9 @@ const BootstrapPopupEvent = {
   SHOWN: "shown.bs.modal"
 };
 
-export class Popup extends HTMLElement {
+export class Popup extends CollapsibleBase {
   private listeners: EventListenerStore = new EventListenerStore();
-  modal: Modal;
+  private modal: Modal;
 
   constructor() {
     super();
@@ -52,33 +51,23 @@ export class Popup extends HTMLElement {
     });
 
     if (!this.collapsed) {
-      this.clientBehaviorShow();
+      this.modal.show();
     }
   }
 
   disconnectedCallback(): void {
-    this.clientBehaviorHide();
+    this.modal.hide();
     // dispose seems to make trouble here: Scrolling is out or order after this call.
     // this.modal.dispose();
     this.listeners.disconnect();
   }
 
-  clientBehaviorShow(behaviorMode?: BehaviorMode): void { //this method must not named 'show' (TOBAGO-2148)
-    console.debug("show - behaviorMode:", behaviorMode);
-    if (behaviorMode == null || behaviorMode == BehaviorMode.client) {
-      this.modal.show();
-    } else {
-      // otherwise the update from server will show the popup
-    }
+  protected clientSideExpandAnimation(): void {
+    this.modal.show();
   }
 
-  clientBehaviorHide(behaviorMode?: BehaviorMode): void { //this method must not named 'hide' (TOBAGO-2148)
-    console.debug("hide - behaviorMode:", behaviorMode);
-    if (behaviorMode == null || behaviorMode == BehaviorMode.client) {
-      this.modal.hide();
-    } else {
-      // otherwise the update from server will hide the popup
-    }
+  protected clientSideCollapseAnimation(): void {
+    this.modal.hide();
   }
 
   private keydownEvent(event: KeyboardEvent): void {
@@ -113,14 +102,6 @@ export class Popup extends HTMLElement {
 
   get bsKeyboard(): boolean {
     return this.dataset.bsKeyboard !== "false";
-  }
-
-  get collapsed(): boolean {
-    return JSON.parse(Collapse.findHidden(this).value);
-  }
-
-  set collapsed(collapsed: boolean) {
-    Collapse.findHidden(this).value = String(collapsed);
   }
 
   get connected(): boolean {
